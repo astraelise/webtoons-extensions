@@ -152,7 +152,8 @@ export abstract class Webtoon implements SearchResultsProviding, MangaProviding,
 
     getChapters(mangaId: string): Promise<Chapter[]> {
         const titleId = mangaId.match(/title_no=([^&]*)&?/)?.[1] ?? '';
-        const isCanvas = mangaId.includes("/canvas/");
+        const fixedId = mangaId.startsWith("/") ? mangaId : "/" + mangaId;
+        const isCanvas = fixedId.includes("/canvas/");
         const segment = isCanvas ? "canvas" : "webtoon";
 
         return this.ExecApiRequest(
